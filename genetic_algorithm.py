@@ -1,5 +1,4 @@
 
-
 import random
 import math
 import copy 
@@ -24,7 +23,21 @@ def generate_random_population(cities_location: List[Tuple[float, float]], popul
     Returns:
     List[List[Tuple[float, float]]]: A list of routes, where each route is represented as a list of city locations.
     """
-    return [random.sample(cities_location, len(cities_location)) for _ in range(population_size)]
+    # return [random.sample(cities_location, len(cities_location)) for _ in range(population_size)]
+
+    # O Hospital é o primeiro item da nossa lista atual
+    hospital = cities_location[0] 
+    entregas = cities_location[1:] # O resto são os postos e clínicas
+    
+    populacao = []
+    for _ in range(population_size):
+        # Embaralhamos apenas as entregas
+        rota_aleatoria = random.sample(entregas, len(entregas))
+        # Colamos o Hospital de volta no início
+        rota_completa = [hospital] + rota_aleatoria
+        populacao.append(rota_completa)
+        
+    return populacao
 
 
 def calculate_distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float:
@@ -38,26 +51,87 @@ def calculate_distance(point1: Tuple[float, float], point2: Tuple[float, float])
     Returns:
     float: The Euclidean distance between the two points.
     """
-    return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+    # return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+    
+    # Pegamos o X e Y acessando a chave "local" de cada dicionário
+    x1, y1 = point1["local"]
+    x2, y2 = point2["local"]
+    
+    return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
 
-def calculate_fitness(path: List[Tuple[float, float]]) -> float:
-    """
-    Calculate the fitness of a given path based on the total Euclidean distance.
+def split_route(individual, capacity):
+    routes = []
+    current_route = [individual[0]] # Começa com o Hospital
+    current_load = 0
+    
+    # Pulamos o primeiro (Hospital) e percorremos as entregas
+    for delivery in individual[1:]:
+        if current_load < capacity:
+            current_route.append(delivery)
+            current_load += 1
+        else:
+            # Veículo encheu! Ele volta ao hospital
+            current_route.append(individual[0]) 
+            routes.append(current_route)
+            
+            # Começa uma nova rota para o próximo veículo
+            current_route = [individual[0], delivery]
+            current_load = 1
+            
+    # Adiciona o retorno ao hospital para o último veículo
+    current_route.append(individual[0])
+    routes.append(current_route)
+    
+    return routes
 
-    Parameters:
-    - path (List[Tuple[float, float]]): A list of tuples representing the path,
-      where each tuple contains the coordinates of a point.
 
-    Returns:
-    float: The total Euclidean distance of the path.
-    """
-    distance = 0
-    n = len(path)
-    for i in range(n):
-        distance += calculate_distance(path[i], path[(i + 1) % n])
 
-    return distance
+# def calculate_fitness(path):
+#     total_cost = 0
+#     distancia_total = 0
+#     penalidade_total = 0
+    
+#     n = len(path)
+#     for i in range(n):
+#         # 1. Calculamos a distância (como já fazíamos)
+#         distancia_trecho = calculate_distance(path[i], path[(i + 1) % n])
+#         distancia_total += distancia_trecho
+        
+#         # 2. Aplicamos a sua lógica de penalidade:
+#         # Penalidade = Prioridade * Posição na Rota
+#         entrega_atual = path[i]
+#         prioridade = entrega_atual.get("prioridade", 0)
+#         posicao = i + 1 # A posição na lista (1ª, 2ª, 3ª...)
+        
+#         penalidade_total += (prioridade * posicao)
+
+#     # A "nota" final é a soma de tudo
+#     total_cost = distancia_total + (penalidade_total * 10) # Multiplicador para a penalidade pesar mais
+#     return total_cost
+def calculate_fitness(path, frota):
+    # 'path' é a sequência de todas as entregas
+    # 'frota' é a lista de capacidades dos nossos veículos
+    
+    distancias_veiculos = []
+    ponteiro_entrega = 1 # Começamos após o Hospital (índice 0)
+    
+    for veiculo in frota:
+        capacidade_v = veiculo['capacidade']
+        # Pegamos as próximas entregas baseadas na capacidade deste veículo específico
+        rota_v = [path[0]] + path[ponteiro_entrega : ponteiro_entrega + capacidade_v] + [path[0]]
+        
+        # Calculamos a distância total desta rota específica
+        dist_v = 0
+        for i in range(len(rota_v) - 1):
+            dist_v += calculate_distance(rota_v[i], rota_v[i+1])
+        
+        distancias_veiculos.append(dist_v)
+        ponteiro_entrega += capacidade_v # Movemos para as próximas entregas da lista
+        
+    # O Fitness é o MAIOR tempo (Makespan) + Penalidades de Prioridade
+    # (Ainda precisamos somar a penalidade de prioridade aqui dentro!)
+    return max(distancias_veiculos)
 
 
 def order_crossover(parent1: List[Tuple[float, float]], parent2: List[Tuple[float, float]]) -> List[Tuple[float, float]]:

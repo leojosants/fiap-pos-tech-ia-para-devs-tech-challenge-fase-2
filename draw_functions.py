@@ -35,10 +35,11 @@ def draw_plot(screen: pygame.Surface, x: list, y: list, x_label: str = 'Generati
     canvas = FigureCanvasAgg(fig)
     canvas.draw()
     renderer = canvas.get_renderer()
-    raw_data = renderer.tostring_rgb()
+    # raw_data = renderer.tostring_rgb()
+    raw_data = canvas.buffer_rgba()
 
     size = canvas.get_width_height()
-    surf = pygame.image.fromstring(raw_data, size, "RGB")
+    surf = pygame.image.fromstring(raw_data.tobytes(), size, "RGBA")
     screen.blit(surf, (0, 0))
     
 def draw_cities(screen: pygame.Surface, cities_locations: List[Tuple[int, int]], rgb_color: Tuple[int, int, int], node_radius: int) -> None:
@@ -54,12 +55,17 @@ def draw_cities(screen: pygame.Surface, cities_locations: List[Tuple[int, int]],
     Returns:
     None
     """
-    for city_location in cities_locations:
-        pygame.draw.circle(screen, rgb_color, city_location, node_radius)
+    # for city_location in cities_locations:
+    #     pygame.draw.circle(screen, rgb_color, city_location, node_radius)
+
+    for city in cities_locations:
+        # Extraímos a tupla (x, y) da chave "local"
+        posicao = city["local"]
+        pygame.draw.circle(screen, rgb_color, posicao, node_radius)
 
 
 
-def draw_paths(screen: pygame.Surface, path: List[Tuple[int, int]], rgb_color: Tuple[int, int, int], width: int = 1):
+def draw_paths(screen: pygame.Surface, path: List[dict], rgb_color: Tuple[int, int, int], width: int = 1):
     """
     Draw a path on a Pygame screen.
 
@@ -69,7 +75,11 @@ def draw_paths(screen: pygame.Surface, path: List[Tuple[int, int]], rgb_color: T
     - rgb_color (Tuple[int, int, int]): RGB values for the color of the path.
     - width (int): Width of the path lines (default is 1).
     """
-    pygame.draw.lines(screen, rgb_color, True, path, width=width)
+
+    # Criamos a lista de coordenadas extraindo o "local" de cada entrega
+    coords_apenas = [entrega["local"] for entrega in path]
+
+    pygame.draw.lines(screen, rgb_color, True, coords_apenas, width=width)
 
 
 def draw_text(screen: pygame.Surface, text: str, color: pygame.Color) -> None:

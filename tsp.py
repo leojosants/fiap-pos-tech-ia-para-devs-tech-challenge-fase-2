@@ -32,9 +32,26 @@ BLUE = (0, 0, 255)
 
 # Initialize problem
 # Using Random cities generation
-cities_locations = [(random.randint(NODE_RADIUS + PLOT_X_OFFSET, WIDTH - NODE_RADIUS), random.randint(NODE_RADIUS, HEIGHT - NODE_RADIUS))
-                    for _ in range(N_CITIES)]
+# cities_locations = [(random.randint(NODE_RADIUS + PLOT_X_OFFSET, WIDTH - NODE_RADIUS), random.randint(NODE_RADIUS, HEIGHT - NODE_RADIUS))
+#                     for _ in range(N_CITIES)]
 
+# Definindo as entregas do Hospital
+entregas_hospital = [
+    {"id": "Hospital", "local": (400, 200), "tipo": "inicio", "prioridade": 0},
+    {"id": "Posto A",  "local": (450, 250), "tipo": "critico", "prioridade": 10},
+    {"id": "Clinica B", "local": (550, 150), "tipo": "regular", "prioridade": 2},
+    {"id": "Farmacia C", "local": (600, 300), "tipo": "critico", "prioridade": 10},
+    {"id": "Posto D",  "local": (700, 100), "tipo": "regular", "prioridade": 2}
+]
+
+# Exemplo de configuração da frota hospitalar
+FROTA = [
+    {"id": "Moto_Emergencia", "capacidade": 2}, 
+    {"id": "Van_Entregas", "capacidade": 5},
+    {"id": "Caminhao_Insumos", "capacidade": 10}
+]
+
+cities_locations = entregas_hospital
 
 # # Using Deault Problems: 10, 12 or 15
 # WIDTH, HEIGHT = 800, 400
