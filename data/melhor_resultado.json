@@ -1,0 +1,186 @@
+{
+    "geracao_final": 335,
+    "melhor_distancia": 309762180.88,
+    "rota": [
+        {
+            "id": "Hospital",
+            "local": [
+                400,
+                300
+            ],
+            "tipo": "inicio",
+            "prioridade": 0
+        },
+        {
+            "id": "Farmacia R",
+            "local": [
+                50,
+                550
+            ],
+            "tipo": "critico",
+            "prioridade": 10
+        },
+        {
+            "id": "Unidade E",
+            "local": [
+                200,
+                100
+            ],
+            "tipo": "critico",
+            "prioridade": 10
+        },
+        {
+            "id": "Posto H",
+            "local": [
+                650,
+                350
+            ],
+            "tipo": "critico",
+            "prioridade": 10
+        },
+        {
+            "id": "Lab G",
+            "local": [
+                300,
+                500
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        },
+        {
+            "id": "Unidade O",
+            "local": [
+                150,
+                350
+            ],
+            "tipo": "critico",
+            "prioridade": 10
+        },
+        {
+            "id": "Posto L",
+            "local": [
+                400,
+                50
+            ],
+            "tipo": "critico",
+            "prioridade": 10
+        },
+        {
+            "id": "Posto D",
+            "local": [
+                700,
+                100
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        },
+        {
+            "id": "Clinica B",
+            "local": [
+                550,
+                150
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        },
+        {
+            "id": "Lab N",
+            "local": [
+                600,
+                50
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        },
+        {
+            "id": "Farmacia K",
+            "local": [
+                750,
+                500
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        },
+        {
+            "id": "Posto A",
+            "local": [
+                450,
+                250
+            ],
+            "tipo": "critico",
+            "prioridade": 10
+        },
+        {
+            "id": "Farmacia C",
+            "local": [
+                600,
+                400
+            ],
+            "tipo": "critico",
+            "prioridade": 10
+        },
+        {
+            "id": "UPA I",
+            "local": [
+                500,
+                550
+            ],
+            "tipo": "critico",
+            "prioridade": 10
+        },
+        {
+            "id": "Posto P",
+            "local": [
+                700,
+                450
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        },
+        {
+            "id": "Posto S",
+            "local": [
+                200,
+                550
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        },
+        {
+            "id": "Centro F",
+            "local": [
+                100,
+                450
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        },
+        {
+            "id": "Clinica J",
+            "local": [
+                50,
+                200
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        },
+        {
+            "id": "Centro M",
+            "local": [
+                250,
+                250
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        },
+        {
+            "id": "Clinica Q",
+            "local": [
+                350,
+                450
+            ],
+            "tipo": "regular",
+            "prioridade": 2
+        }
+    ]
+}

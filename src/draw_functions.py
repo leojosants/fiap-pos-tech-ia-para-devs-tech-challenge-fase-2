@@ -15,7 +15,8 @@ from typing import List, Tuple
 matplotlib.use("Agg")
 
 
-def draw_plot(screen: pygame.Surface, x: list, y: list, x_label: str = 'Generation', y_label: str = 'Fitness') -> None:
+# def draw_plot(screen: pygame.Surface, x: list, y: list, x_label: str = 'Generation', y_label: str = 'Fitness') -> None:
+def draw_plot(screen: pygame.Surface, x: list, y: list, x_label: str = 'Generation', y_label: str = 'Fitness', position: Tuple[int, int] = (0, 0)) -> None:
     """
     Draw a plot on a Pygame screen using Matplotlib.
 
@@ -38,10 +39,15 @@ def draw_plot(screen: pygame.Surface, x: list, y: list, x_label: str = 'Generati
     # raw_data = renderer.tostring_rgb()
     raw_data = canvas.buffer_rgba()
 
+    # size = canvas.get_width_height()
+    # surf = pygame.image.fromstring(raw_data.tobytes(), size, "RGBA")
+
     size = canvas.get_width_height()
     surf = pygame.image.fromstring(raw_data.tobytes(), size, "RGBA")
-    screen.blit(surf, (0, 0))
+    # screen.blit(surf, (0, 0))
+    screen.blit(surf, position)
     
+
 def draw_cities(screen: pygame.Surface, cities_locations: List[Tuple[int, int]], rgb_color: Tuple[int, int, int], node_radius: int) -> None:
     """
     Draws circles representing cities on the given Pygame screen.
@@ -82,22 +88,20 @@ def draw_paths(screen: pygame.Surface, path: List[dict], rgb_color: Tuple[int, i
     pygame.draw.lines(screen, rgb_color, True, coords_apenas, width=width)
 
 
-def draw_text(screen: pygame.Surface, text: str, color: pygame.Color) -> None:
+def draw_text(screen: pygame.Surface, text: str, position: Tuple[int, int], color: pygame.Color) -> None:
     """
-    Draw text on a Pygame screen.
-
-    Parameters:
-    - screen (pygame.Surface): The Pygame surface to draw the text on.
-    - text (str): The text to be displayed.
-    - color (pygame.Color): The color of the text.
+    Renders arbitrary text on the Pygame surface.
+    This function initializes the font module, creates a text surface using the Arial font, and draws it at the specified position.
+    Args:
+    screen(pygame.Surface): The surface (window) where the text will be drawn.
+    text(str): The text content to be displayed.
+    position(Tuple[int, int]): Coordinates (x, y) of the upper left corner of the text.
+    color(pygame.Color): The text color in RGB format or pygame.Color object.
+    Returns:
+    None: The function performs the drawing directly on the 'screen' (inplace).
     """
-    pygame.font.init()  # You have to call this at the start
-
+    pygame.font.init()
     font_size = 15
     my_font = pygame.font.SysFont('Arial', font_size)
-    text_surface = my_font.render(text, False, color)
-    
-    cities_locations = []  # Assuming you have this list defined somewhere
-    text_position = (np.average(np.array(cities_locations)[:, 0]), HEIGHT - 1.5 * font_size)
-    
-    screen.blit(text_surface, text_position)
+    text_surface = my_font.render(text, True, color)
+    screen.blit(text_surface, position)
